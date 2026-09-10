@@ -313,9 +313,7 @@ async function load() {
 async function setAccess(email, revoke) {
   let reason = "";
   if (revoke) {
-    if (!confirm("Revoke Green Vision access for " + email + "?
-
-" +
+    if (!confirm("Revoke Green Vision access for " + email + "?\n\n" +
                  "They will be signed out of the app and shown a message. " +
                  "Their saved projects are kept and come back if you restore access.")) return;
     reason = prompt("Reason (optional) — this is shown to them in the app:", "") || "";
