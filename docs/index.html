@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Download Green Vision for Windows</title>
+<!--
+  Hosted on GitHub Pages, next to the release it describes.
+
+  Two sources, and the order matters. The FILE FACTS - version, size,
+  download link, release notes - come from the GitHub Releases API, which is
+  public, needs no key, and is updated by the act of publishing a release.
+  Nothing has to be typed anywhere for this page to be correct.
+
+  The ANNOUNCEMENT - a custom message, or a withdrawal - comes from the admin
+  API, and is entirely optional. If that host is unreachable, or suspended,
+  or simply slow, the page still shows the right version and the right
+  download, because the half that matters does not depend on it.
+
+  That is the whole reason it is built this way: the previous version read
+  everything from one API, so a billing problem on that host would have taken
+  the download page down with it.
+-->
+<style>
+:root{--bg:#f2f5f3;--card:#fff;--ink:#0f2a22;--soft:#5c7168;--line:#dfe6e1;
+      --brand:#0e9f6e;--warn:#8a6d1f;--warnbg:#fdf6e3;}
+@media(prefers-color-scheme:dark){:root{--bg:#0c1512;--card:#121c19;--ink:#e8f2ee;
+      --soft:#9fb3aa;--line:#22322c;--warnbg:#2a2412;--warn:#e3c46a;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);padding:32px 16px 56px;
+  font:15px/1.65 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+.w{max-width:620px;margin:0 auto;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:26px 24px;margin-bottom:16px;}
+.h{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.h img{width:46px;height:46px;border-radius:12px;display:block;}
+.n{font-size:19px;font-weight:800;letter-spacing:-.2px;}
+.t{font-size:10.5px;font-weight:700;color:var(--soft);letter-spacing:.13em;}
+h1{font-size:22px;margin:0 0 8px;}
+p{margin:0 0 14px;}
+.dim{color:var(--soft);font-size:13.5px;}
+a.btn{display:block;background:var(--brand);color:#fff;text-decoration:none;
+  text-align:center;padding:15px;border-radius:12px;font-weight:700;
+  font-size:15.5px;margin:18px 0 10px;}
+a.btn:hover{background:#0c8a5f;}
+.meta{font-size:12.5px;color:var(--soft);text-align:center;}
+code{background:rgba(128,128,128,.14);padding:2px 6px;border-radius:5px;
+  font-size:12px;word-break:break-all;}
+.warn{background:var(--warnbg);border:1px solid rgba(190,160,60,.35);
+  border-radius:12px;padding:16px 18px;margin:18px 0;}
+.warn b{color:var(--warn);}
+ol{margin:10px 0 0;padding-left:20px;} li{margin-bottom:6px;}
+ul{margin:8px 0 0;padding-left:20px;}
+.f{text-align:center;font-size:11.5px;color:var(--soft);margin-top:8px;}
+.new{border-left:3px solid var(--brand);padding:2px 0 2px 14px;margin:0 0 6px;}
+.new h2{font-size:14px;margin:0 0 6px;}
+.hide{display:none;}
+</style></head><body><div class="w">
+
+<div class="card">
+  <div class="h">
+    <img src="green-vision-mark-128.png" alt="">
+    <div><div class="n">Green Vision</div><div class="t">ENVIRONMENTAL INTELLIGENCE</div></div>
+  </div>
+
+  <h1>Green Vision for Windows</h1>
+  <p class="dim">Tree-planting prioritisation for Indian cities — air quality,
+  canopy loss, traffic bottlenecks, soil and cost, on one map.</p>
+
+  <div class="new hide" id="whatsnew">
+    <h2 id="nTitle"></h2>
+    <p class="dim" id="nMsg" style="margin:0"></p>
+  </div>
+
+  <a class="btn" id="dl" href="https://github.com/RKTHEGOAT837/green-vision-releases/releases/latest">Download for Windows</a>
+  <div class="meta" id="meta">Windows 10 or 11 &nbsp;·&nbsp; 64-bit</div>
+
+  <div class="warn">
+    <p style="margin:0 0 6px"><b>Windows will show a warning. This is expected.</b></p>
+    <p style="margin:0 0 4px" class="dim">The installer is not code-signed — a
+    certificate costs a few hundred dollars a year, and this is an early build.
+    Windows SmartScreen flags any unsigned installer, however harmless. To
+    continue:</p>
+    <ol class="dim" style="margin-top:8px">
+      <li>Click <b>More info</b> on the blue "Windows protected your PC" dialog</li>
+      <li>Click <b>Run anyway</b></li>
+    </ol>
+    <div id="shaBlock" class="hide">
+      <p class="dim" style="margin:12px 0 0">If you would rather verify the file
+      first, its SHA-256 should be exactly:</p>
+      <p style="margin:6px 0 0"><code id="sha"></code></p>
+      <p class="dim" style="margin:8px 0 0">Check it in PowerShell with
+      <code id="shaCmd">Get-FileHash .\GreenVision-1.0.0-x64.exe</code></p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h1 style="font-size:17px">What you get</h1>
+  <ul class="dim">
+    <li><b>Everything is included.</b> No Python, no setup, no API keys. The
+        analysis engine and a 2.6-million-feature map index install with the app.</li>
+    <li><b>It works offline.</b> Map reads are answered from your own machine
+        rather than a public server, so the Traffic tab and the area census load
+        in under a second and never hit a rate limit.</li>
+    <li><b>Five cities baked in</b> — Ahmedabad, Bengaluru, Chennai, Delhi and
+        Mumbai — and any point in India can be analysed on the map.</li>
+    <li><b>Signing in is optional.</b> The app is fully usable without an
+        account; an account adds saved projects, assistant memory, search
+        history and the shared Library.</li>
+  </ul>
+  <p class="dim" style="margin-top:14px">A desktop shortcut is created for you.
+  Opening it starts the engine automatically — nothing else to run. Installing a
+  newer version replaces this one; your projects and your sign-in are kept.</p>
+</div>
+
+<div class="f">Green Vision — tree-planting prioritisation for Indian cities.</div>
+</div>
+
+<script>
+const REPO = "RKTHEGOAT837/green-vision-releases";
+const API  = "https://green-vision-api.netlify.app";
+const $ = id => document.getElementById(id);
+
+function mb(bytes) {
+  if (!bytes) return "";
+  return (bytes / 1048576).toFixed(0) + " MB";
+}
+
+/* 1. The file, from GitHub. This is the half that must never depend on
+      anything we run ourselves. */
+(async () => {
+  try {
+    const r = await fetch("https://api.github.com/repos/" + REPO + "/releases/latest",
+                          { headers: { Accept: "application/vnd.github+json" } });
+    if (!r.ok) return;
+    const rel = await r.json();
+
+    const exe = (rel.assets || []).find(a => /\.exe$/i.test(a.name));
+    if (exe) {
+      $("dl").href = exe.browser_download_url;
+      $("dl").textContent = "Download for Windows · " + mb(exe.size);
+      $("shaCmd").textContent = "Get-FileHash .\\" + exe.name;
+    }
+
+    const version = String(rel.tag_name || "").replace(/^v/, "");
+    $("meta").textContent =
+      [version ? "Version " + version : null, "Windows 10 or 11", "64-bit"]
+        .filter(Boolean).join(" · ");
+
+    /* The hash, from a SHA256SUMS.txt asset if one is published, otherwise
+       from the release notes. Neither is guessed: if there is no hash the
+       block stays hidden rather than showing one that might be wrong. */
+    let sha = "";
+    const sums = (rel.assets || []).find(a => /^SHA256SUMS/i.test(a.name));
+    if (sums) {
+      try {
+        const t = await (await fetch(sums.browser_download_url)).text();
+        const m = t.match(/\b([0-9a-f]{64})\b/i);
+        if (m) sha = m[1];
+      } catch (e) { /* fall through to the notes */ }
+    }
+    if (!sha && rel.body) {
+      const m = rel.body.match(/\b([0-9a-f]{64})\b/i);
+      if (m) sha = m[1];
+    }
+    if (sha) { $("sha").textContent = sha.toLowerCase(); $("shaBlock").classList.remove("hide"); }
+  } catch (e) { /* the button already points at the release page */ }
+})();
+
+/* 2. The announcement, from the admin API. Entirely optional: everything
+      above is already correct without it. */
+(async () => {
+  try {
+    const c = new AbortController();
+    const t = setTimeout(() => c.abort(), 5000);
+    const r = await fetch(API + "/app/notice", { signal: c.signal });
+    clearTimeout(t);
+    if (!r.ok) return;
+    const n = await r.json();
+
+    if ((n.message || n.title) && !n.killed) {
+      $("nTitle").textContent = n.title || "What's new";
+      $("nMsg").textContent = n.message || "";
+      $("whatsnew").classList.remove("hide");
+    }
+    if (n.killed) {
+      $("dl").removeAttribute("href");
+      $("dl").textContent = "Downloads are paused";
+      $("dl").style.background = "#94a3b8";
+      $("dl").style.cursor = "default";
+      $("nTitle").textContent = n.title || "Temporarily unavailable";
+      $("nMsg").textContent = n.message ||
+        "This version has been withdrawn. Please check back shortly.";
+      $("whatsnew").classList.remove("hide");
+      $("shaBlock").classList.add("hide");
+    }
+  } catch (e) { /* no announcement is a perfectly normal state */ }
+})();
+</script>
+</body></html>
