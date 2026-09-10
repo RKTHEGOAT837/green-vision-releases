@@ -134,7 +134,16 @@ function mb(bytes) {
     if (!r.ok) return;
     const rel = await r.json();
 
-    const exe = (rel.assets || []).find(a => /\.exe$/i.test(a.name));
+    /* The OPEN edition, explicitly.
+
+       A release now carries two .exe assets, and a bare `find` returns
+       whichever GitHub happens to list first - not a promise about which
+       edition that is. The managed build is invite-only and deliberately
+       not offered here: it is unusable without an account, so a stranger
+       downloading it from a public page would meet a locked screen and no
+       way through it. */
+    const exe = (rel.assets || []).find(a => /\.exe$/i.test(a.name) &&
+                                             !/managed/i.test(a.name));
     if (exe) {
       $("dl").href = exe.browser_download_url;
       $("dl").textContent = "Download for Windows · " + mb(exe.size);
@@ -154,7 +163,17 @@ function mb(bytes) {
     if (sums) {
       try {
         const t = await (await fetch(sums.browser_download_url)).text();
-        const m = t.match(/\b([0-9a-f]{64})\b/i);
+        /* The line naming THIS file, not the first hash in the file.
+           SHA256SUMS.txt lists both editions now, so taking the first
+           64-hex run was a coin toss that could print the managed build's
+           hash under the open build's download button - a verification
+           step that then fails for everybody who follows it. */
+        let m = null;
+        if (exe) {
+          const esc = exe.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          m = t.match(new RegExp("([0-9a-f]{64})[^\\n]*?" + esc, "i"));
+        }
+        if (!m) m = t.match(/\b([0-9a-f]{64})\b/i);
         if (m) sha = m[1];
       } catch (e) { /* fall through to the notes */ }
     }
