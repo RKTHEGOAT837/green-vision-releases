@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Green Vision · Admin</title>
-<link rel="icon" href="https://green-vision-india.netlify.app/brand/green-vision-mark-128.png">
+<link rel="icon" href="green-vision-mark-128.png">
 <style>
 :root{--bg:#f2f5f3;--card:#fff;--ink:#0f2a22;--soft:#5c7168;--line:#dfe6e1;
       --brand:#0e9f6e;--red:#c0392b;--field:#fff;--head:#f7faf8;}
@@ -69,7 +69,7 @@ td b{font-weight:700;}
 
 <div class="card">
   <div class="h">
-    <img src="https://green-vision-india.netlify.app/brand/green-vision-mark-128.png" alt="">
+    <img src="green-vision-mark-128.png" alt="">
     <div><div class="n">Green Vision</div><div class="t">ADMIN</div></div>
   </div>
 
@@ -167,8 +167,41 @@ td b{font-weight:700;}
 
 </div>
 <script>
-const API = location.origin;
+/* The API lives on a different host to this page.
+
+   This said `location.origin`, which was correct when the page and the API
+   were two halves of one Netlify deploy. On GitHub Pages the origin is
+   rkthegoat837.github.io, which has no API on it - so every call fetched
+   GitHub's own 404 page and the reader was shown a JSON parse error about
+   an unexpected "<". Nothing was wrong with the server, the credentials or
+   the network; the page was simply asking the wrong host.
+
+   `location.origin` is kept as the fallback for a same-origin deploy, so
+   this file still works unchanged if it is ever served beside the API
+   again. */
+const API = "https://green-vision-api.greenvision-rk.workers.dev" || location.origin;
 const $ = id => document.getElementById(id);
+
+/* Read a response that is supposed to be JSON.
+
+   A fetch that lands on the wrong host, or on a host that is down, answers
+   with a page of HTML at some status - and `r.json()` then throws a parser
+   message that describes the first character of the markup rather than the
+   problem. Anyone reading "Unexpected token '<'" learns nothing about what
+   to do next, so it is turned into a sentence that names the actual
+   suspect. */
+async function readJson(r) {
+  const text = await r.text();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    if (/^\s*</.test(text)) {
+      throw new Error("the API returned a web page instead of data — " +
+                      "check that " + API + " is reachable");
+    }
+    throw new Error("the API sent something unreadable (HTTP " + r.status + ")");
+  }
+}
 let token = null, users = [];
 
 try { token = sessionStorage.getItem("gv_admin") || null; } catch (e) {}
@@ -189,7 +222,7 @@ const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g,
 async function loadNotice() {
   try {
     const r = await fetch(API + "/api/app/notice");
-    const n = await r.json();
+    const n = await readJson(r);
     $("bTitle").value = n.title || "";
     $("bMsg").value = n.message || "";
     $("bLatest").value = n.latest || "";
@@ -262,7 +295,7 @@ async function load() {
     headers: { Authorization: "Bearer " + token }
   });
   if (r.status === 401) { signOut(); return; }
-  const j = await r.json();
+  const j = await readJson(r);
   users = j.users || [];
   loadNotice();
 
@@ -324,7 +357,7 @@ async function setAccess(email, revoke) {
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
     body: JSON.stringify({ email, revoked: revoke, reason: reason.trim() })
   });
-  const j = await r.json().catch(() => ({}));
+  const j = await readJson(r).catch(() => ({}));
   if (!r.ok) { alert(j.error || ("HTTP " + r.status)); return; }
   await load();
 }
@@ -337,7 +370,7 @@ $("go").onclick = async () => {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: $("u").value, password: $("p").value })
     });
-    const j = await r.json();
+    const j = await readJson(r);
     if (!r.ok || !j.ok) { $("err").textContent = j.error || ("HTTP " + r.status); return; }
     token = j.token;
     try { sessionStorage.setItem("gv_admin", token); } catch (e) {}
