@@ -65,6 +65,10 @@ td b{font-weight:700;}
 .kill b{color:#b91c1c;}
 .bcacts{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap;}
 .bcstate{font-size:12.5px;color:var(--soft);}
+/* Destructive, and it should look it - but amber rather than red, because
+   it removes an announcement and never touches anybody's data. */
+button.ghost.danger{color:#a4622a;border-color:rgba(190,140,40,.5);}
+@media(prefers-color-scheme:dark){button.ghost.danger{color:#e0a15e;}}
 </style></head><body><div class="w">
 
 <div class="card">
@@ -149,6 +153,7 @@ td b{font-weight:700;}
       <div class="bcacts">
         <button id="bSend">Send to every app</button>
         <button class="ghost" id="bClear">Clear the message</button>
+        <button class="ghost danger" id="bWipe">Delete all messages</button>
         <span class="bcstate" id="bState"></span>
       </div>
     </div>
@@ -392,6 +397,50 @@ $("out").onclick = signOut;
 $("refresh").onclick = load;
 $("bSend").onclick = () => sendNotice(false);
 $("bClear").onclick = () => sendNotice(true);
+
+/* Delete every message the apps are showing.
+
+   "Clear the message" empties the form's text fields and leaves the release
+   details in place, which is the ordinary end of an announcement. This is
+   the bigger hammer: it also removes the version that drives the update
+   pop-up, so an app that starts up afterwards shows nothing at all.
+
+   What it does NOT do is touch accounts, projects, the Library or anyone's
+   history. The notice is one shared record; deleting it deletes what people
+   are being SHOWN, not anything they have made. The confirmation says so,
+   because "delete all messages" is the kind of label a reader can easily
+   believe means more than it does. */
+$("bWipe").onclick = async () => {
+  if (!confirm(
+      "Delete every message currently shown in Green Vision?\n\n" +
+      "This removes the headline, the message and the update prompt from " +
+      "every app, including the kill switch if it is on.\n\n" +
+      "Accounts, saved projects and the Library are not affected.")) return;
+
+  $("bState").style.color = "";
+  $("bState").textContent = "Deleting…";
+  const r = await fetch(API + "/api/admin/notice", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+    /* Everything a reader could see, blanked - including `latest` and `min`,
+       which is what separates this from Clear: leave `latest` set and the
+       update prompt keeps appearing after the message is gone. The installer
+       link, size and hash stay, because the download page renders those and
+       they are facts about the build rather than a message to anyone. */
+    body: JSON.stringify({
+      killed: false, title: "", message: "", latest: "", min: "", only: "",
+      file: $("bFile").value.trim(), size: $("bSize").value.trim(),
+      sha256: $("bSha").value.trim()
+    })
+  });
+  if (r.status === 401) { signOut(); return; }
+  if (!r.ok) { $("bState").textContent = "Failed — " + r.status; return; }
+  $("bTitle").value = $("bMsg").value = $("bLatest").value =
+    $("bMin").value = $("bOnly").value = "";
+  $("bKill").checked = false;
+  await loadNotice();
+  $("bState").textContent = "All messages deleted. Apps will show nothing on next start.";
+};
 
 $("csv").onclick = () => {
   const head = ["email","name","organisation","orgType","role","city","state",
