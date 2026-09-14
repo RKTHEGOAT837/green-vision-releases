@@ -111,11 +111,9 @@
     hyphens:auto;margin-bottom:1.7mm;
   }
   p b{font-weight:700;}
-  .flow h2:first-child + p::first-letter{
-    float:left;font-family:var(--serif);font-weight:700;
-    font-size:9.4mm;line-height:.84;color:var(--green);
-    padding:.8mm 1.4mm 0 0;
-  }
+  /* No floated drop cap in the Canva build. A float here imports as a
+     full-width text box that lands on top of the second column; the
+     paragraph reads perfectly well without it. */
   .pull{break-inside:avoid;margin:.8mm 0 2mm;padding-left:2.6mm;
     border-left:.65mm solid var(--amber);}
   .pull p{
