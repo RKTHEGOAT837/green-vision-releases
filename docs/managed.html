@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Update Green Vision (managed edition)</title>
+<!--
+  The MANAGED edition's download page.
+
+  It exists because the two builds are separate applications to Windows -
+  different appId, different install directory, different user-data folder -
+  so handing a managed user the open installer does not update them. It
+  installs a second, ungated copy beside the gated one, which is the exact
+  opposite of what the managed build is for.
+
+  noindex, because this build is unusable without an invited account: a
+  stranger who found it would meet a locked screen and no way through. It is
+  linked only from inside the managed app's own update notice.
+
+  The version, size and link all come from the GitHub Releases API at load,
+  so this page never needs editing when a release ships. It picks the asset
+  whose name contains "managed" - explicitly, because a release carries two
+  .exe files and a bare find returns whichever GitHub listed first.
+-->
+<style>
+  :root{
+    --ink:#e8f2ee; --dim:#9fb5ac; --green:#12b981; --deep:#0d1a17;
+    --card:#132621; --line:#1e3a32; --amber:#E0A15E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--deep); color:var(--ink);
+    font:16px/1.6 'Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+    padding:32px 20px 64px;
+  }
+  .wrap{max-width:620px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:28px;}
+  .disc{
+    width:48px;height:48px;border-radius:50%;flex:none;
+    background:linear-gradient(135deg,#12b981,#2f7ef0);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .disc svg{width:30px;height:30px;display:block;}
+  .brand b{font-size:21px;font-weight:700;letter-spacing:-.2px;display:block;line-height:1.1;}
+  .brand span{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:#8FD9BE;}
+  .tag{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.4px;
+    text-transform:uppercase;color:#0d1a17;background:var(--green);
+    padding:4px 10px;border-radius:99px;margin-bottom:14px;
+  }
+  h1{font-size:27px;line-height:1.2;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;}
+  .lede{color:var(--dim);margin-bottom:24px;}
+  .btn{
+    display:block;text-align:center;text-decoration:none;
+    background:var(--green);color:#07130f;font-weight:700;font-size:17px;
+    padding:15px 20px;border-radius:10px;margin:22px 0 10px;
+  }
+  .meta{text-align:center;color:var(--dim);font-size:13px;margin-bottom:26px;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;margin-bottom:16px;
+  }
+  .card h2{
+    font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--green);margin-bottom:8px;
+  }
+  .card.warn h2{color:var(--amber);}
+  .card p, .card li{font-size:14.5px;color:#cfe0d9;}
+  .card ol{margin:6px 0 0 18px;} .card ol li{margin-bottom:5px;}
+  code{
+    background:#0a1512;border:1px solid var(--line);border-radius:5px;
+    padding:2px 6px;font-size:13px;color:#bfe7d6;
+  }
+  .foot{color:#6f8a80;font-size:12.5px;margin-top:26px;text-align:center;}
+  a{color:#8FD9BE;}
+</style></head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="disc">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 7C16 9.5 11.5 16.5 11.5 24.5c0 9 12.5 16.5 12.5 16.5s12.5-7.5 12.5-16.5C36.5 16.5 32 9.5 24 7z" fill="#fff"/>
+        <path d="M24 14v19M24 19.5l-5.5-3.2M24 25l6.5-4M24 30.5l-5.5-3.2" stroke="#0E9F6E" stroke-width="2.1" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div><b>Green Vision</b><span>Environmental Intelligence</span></div>
+  </div>
+
+  <div class="tag">Managed edition</div>
+  <h1>Update your copy of Green Vision</h1>
+  <p class="lede">This is the invited build, the one that asks you to sign in.
+    Install this and it replaces the copy you already have.</p>
+
+  <a class="btn" id="dl"
+     href="https://github.com/RKTHEGOAT837/green-vision-releases/releases/latest">Download the managed build</a>
+  <p class="meta" id="meta">Windows 10 or 11 · 64-bit</p>
+
+  <div class="card warn">
+    <h2>Take this one, not the public download</h2>
+    <p>The public page offers the <b>open</b> build. Windows treats the two as
+      different applications, so installing that one would leave you with a
+      second copy alongside this one rather than updating it. If you have
+      already done that, uninstall <i>Green Vision</i> and keep
+      <i>Green Vision Managed</i>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Installing it</h2>
+    <ol>
+      <li>Download the file above.</li>
+      <li>Windows will warn you: <b>&ldquo;Windows protected your PC&rdquo;</b>.
+        That is expected &mdash; the installer is not code-signed. Click
+        <b>More info</b>, then <b>Run anyway</b>.</li>
+      <li>Run it. Your saved projects and your sign-in are kept.</li>
+    </ol>
+  </div>
+
+  <div class="card" id="shaCard" style="display:none">
+    <h2>Check the file if you want to</h2>
+    <p><code id="shaCmd">Get-FileHash .\GreenVision-Managed-x64.exe</code></p>
+    <p style="margin-top:6px;word-break:break-all;color:var(--dim)"><span id="sha"></span></p>
+  </div>
+
+  <p class="foot">Trouble installing? Write to
+    <a href="mailto:greenvision.support@gmail.com">greenvision.support@gmail.com</a>.</p>
+</div>
+
+<script>
+/* The file facts come from the Releases API, so shipping a release is the
+   only step: this page needs no edit. If the API is unreachable the button
+   still points at the latest release page, which is a working fallback
+   rather than a dead link. */
+const $ = id => document.getElementById(id);
+function mb(b){ return b ? (b/1048576).toFixed(0) + " MB" : ""; }
+
+(async () => {
+  try {
+    const rel = await (await fetch(
+      "https://api.github.com/repos/RKTHEGOAT837/green-vision-releases/releases/latest",
+      { headers: { accept: "application/vnd.github+json" } })).json();
+
+    /* The MANAGED asset, explicitly. A release carries two .exe files and a
+       bare find returns whichever GitHub happened to list first, which is
+       not a promise about which edition that is. */
+    const exe = (rel.assets || []).find(
+      a => /\.exe$/i.test(a.name) && /managed/i.test(a.name));
+    if (exe) {
+      $("dl").href = exe.browser_download_url;
+      $("dl").textContent = "Download the managed build · " + mb(exe.size);
+      $("shaCmd").textContent = "Get-FileHash .\\" + exe.name;
+    }
+    const v = String(rel.tag_name || "").replace(/^v/, "");
+    $("meta").textContent =
+      [v ? "Version " + v : null, "Windows 10 or 11", "64-bit"]
+        .filter(Boolean).join(" · ");
+
+    /* A hash only if one is actually published. Showing one that might be
+       wrong is worse than showing none. */
+    const sums = (rel.assets || []).find(a => /SHA256SUMS/i.test(a.name));
+    if (sums && exe) {
+      const t = await (await fetch(sums.browser_download_url)).text();
+      const line = t.split(/\r?\n/).find(l => l.includes(exe.name));
+      if (line) {
+        $("sha").textContent = line.trim().split(/\s+/)[0];
+        $("shaCard").style.display = "";
+      }
+    }
+  } catch (e) { /* the button already points somewhere that works */ }
+})();
+</script>
+</body></html>
