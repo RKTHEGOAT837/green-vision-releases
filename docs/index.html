@@ -108,18 +108,24 @@ ul{margin:8px 0 0;padding-left:20px;}
   <h1 style="font-size:17px">macOS <span style="font-size:11px;font-weight:700;
     letter-spacing:.08em;vertical-align:middle;background:#0e9f6e;color:#fff;
     border-radius:6px;padding:3px 7px;margin-left:6px">BETA</span></h1>
-  <p class="dim">Not ready to download yet, and we would rather say so than
-  ship something that opens to a dead engine.</p>
-  <p class="dim">The app carries its whole analysis engine inside the
-  installer — a Python runtime, Intel's OpenVINO libraries and a
-  2.6-million-feature map index — and on Windows every one of those is a
-  Windows binary. A Mac build is not a packaging switch; it needs those
-  three rebuilt for macOS. That work is set up and waiting on a Mac to run
-  and test it on.</p>
-  <p class="dim" style="margin-bottom:0">Until then, everything the desktop
-  app does is also in the browser version, which runs on a Mac today — it
-  reads the map from public sources instead of a local index, so it is
-  slower and needs a connection.</p>
+  <p class="dim">The same app, the same engine, the same numbers.</p>
+
+  <a class="btn" id="dlMacArm" href="https://github.com/RKTHEGOAT837/green-vision/releases">Download for Apple Silicon</a>
+  <div class="meta" style="margin-bottom:14px">M1, M2, M3 or M4 &nbsp;&middot;&nbsp; macOS 12 or later</div>
+
+  <a class="btn" id="dlMacIntel" style="background:transparent;color:var(--brand);border:1px solid var(--brand)" href="https://github.com/RKTHEGOAT837/green-vision/releases">Download for Intel Mac</a>
+  <div class="meta">Macs from before 2021</div>
+
+  <div class="warn">
+    <p style="margin:0 0 6px"><b>How to install</b></p>
+    <ol class="dim" style="margin-top:8px">
+      <li>Double-click the downloaded <code>.zip</code> to unpack it</li>
+      <li>Drag <b>Green Vision</b> into your <b>Applications</b> folder</li>
+      <li>The first time only: right-click it and choose <b>Open</b>, then
+          <b>Open</b> again &mdash; the app is not signed, so a double-click
+          is refused until you have done this once</li>
+    </ol>
+  </div>
 </div>
 
 <div class="card">
@@ -219,6 +225,28 @@ function mb(bytes) {
     }
     if (sha) { $("sha").textContent = sha.toLowerCase(); $("shaBlock").classList.remove("hide"); }
   } catch (e) { /* the button already points at the release page */ }
+})();
+
+/* 1b. The macOS build. It is published by the build workflow into the
+      source repository, because a workflow's token only reaches its own
+      repo - so it is a second lookup, resolved the same way and just as
+      unable to go stale. */
+(async () => {
+  try {
+    const r = await fetch("https://api.github.com/repos/RKTHEGOAT837/green-vision/releases",
+                          { headers: { Accept: "application/vnd.github+json" } });
+    if (!r.ok) return;
+    const rel = (await r.json()).find(x => /^mac-v/.test(x.tag_name || ""));
+    if (!rel) return;
+    const pick = (re, id, label) => {
+      const a = (rel.assets || []).find(x => re.test(x.name));
+      if (!a) return;
+      $(id).href = a.browser_download_url;
+      $(id).textContent = label + " · " + mb(a.size);
+    };
+    pick(/arm64/i, "dlMacArm",   "Download for Apple Silicon");
+    pick(/x64/i,   "dlMacIntel", "Download for Intel Mac");
+  } catch (e) { /* the buttons already point at the releases page */ }
 })();
 
 /* 2. The announcement, from the admin API. Entirely optional: everything
