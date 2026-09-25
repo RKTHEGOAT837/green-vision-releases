@@ -1,3 +1,14 @@
+      <li>Double-click the downloaded <code>.zip</code> to unpack it</li>
+      <li>Drag <b>Green Vision</b> into your <b>Applications</b> folder</li>
+      <li>Open it. macOS will say it cannot check the app for malicious
+          software &mdash; go to <b>System Settings &rsaquo; Privacy &amp;
+          Security</b>, scroll down, and click <b>Open Anyway</b>. Once only.</li>
+      <li>If it says the app is <b>damaged</b> instead, macOS has quarantined
+          the download. Open <b>Terminal</b> and run:<br>
+          <code>xattr -cr "/Applications/Green Vision.app"</code><br>
+          then open it again. The app is not damaged &mdash; that is what
+          macOS says about software it cannot trace to a paid Apple developer
+          account.</li>
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -100,10 +111,8 @@ ul{margin:8px 0 0;padding-left:20px;}
   <p class="dim">The same app, the same engine, the same numbers.</p>
 
   <a class="btn" id="dlMacArm" href="https://github.com/RKTHEGOAT837/green-vision/releases">Download for Apple Silicon</a>
-  <div class="meta" style="margin-bottom:14px">M1, M2, M3 or M4 &nbsp;&middot;&nbsp; macOS 12 or later</div>
+  <div class="meta" style="margin-bottom:14px">Apple Silicon &mdash; M1, M2, M3 or M4 &nbsp;&middot;&nbsp; macOS 12 or later</div>
 
-  <a class="btn" id="dlMacIntel" style="background:transparent;color:var(--brand);border:1px solid var(--brand)" href="https://github.com/RKTHEGOAT837/green-vision/releases">Download for Intel Mac</a>
-  <div class="meta">Macs from before 2021</div>
 
   <div class="warn">
     <p style="margin:0 0 6px"><b>How to install</b></p>
@@ -234,7 +243,6 @@ function mb(bytes) {
       $(id).textContent = label + " · " + mb(a.size);
     };
     pick(/arm64/i, "dlMacArm",   "Download for Apple Silicon");
-    pick(/x64/i,   "dlMacIntel", "Download for Intel Mac");
   } catch (e) { /* the buttons already point at the releases page */ }
 })();
 
