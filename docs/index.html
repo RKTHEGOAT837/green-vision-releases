@@ -1,14 +1,3 @@
-      <li>Double-click the downloaded <code>.zip</code> to unpack it</li>
-      <li>Drag <b>Green Vision</b> into your <b>Applications</b> folder</li>
-      <li>Open it. macOS will say it cannot check the app for malicious
-          software &mdash; go to <b>System Settings &rsaquo; Privacy &amp;
-          Security</b>, scroll down, and click <b>Open Anyway</b>. Once only.</li>
-      <li>If it says the app is <b>damaged</b> instead, macOS has quarantined
-          the download. Open <b>Terminal</b> and run:<br>
-          <code>xattr -cr "/Applications/Green Vision.app"</code><br>
-          then open it again. The app is not damaged &mdash; that is what
-          macOS says about software it cannot trace to a paid Apple developer
-          account.</li>
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -119,9 +108,15 @@ ul{margin:8px 0 0;padding-left:20px;}
     <ol class="dim" style="margin-top:8px">
       <li>Double-click the downloaded <code>.zip</code> to unpack it</li>
       <li>Drag <b>Green Vision</b> into your <b>Applications</b> folder</li>
-      <li>The first time only: right-click it and choose <b>Open</b>, then
-          <b>Open</b> again &mdash; the app is not signed, so a double-click
-          is refused until you have done this once</li>
+      <li>Open it. macOS will say it cannot check the app for malicious
+          software &mdash; go to <b>System Settings &rsaquo; Privacy &amp;
+          Security</b>, scroll down, and click <b>Open Anyway</b>. Once only.</li>
+      <li>If it says the app is <b>damaged</b> instead, macOS has quarantined
+          the download. Open <b>Terminal</b> and run:<br>
+          <code>xattr -cr "/Applications/Green Vision.app"</code><br>
+          then open it again. The app is not damaged &mdash; that is what macOS
+          says about software it cannot trace to a paid Apple developer
+          account.</li>
     </ol>
   </div>
 </div>
@@ -186,7 +181,7 @@ function mb(bytes) {
                                              !/managed/i.test(a.name));
     if (exe) {
       $("dl").href = exe.browser_download_url;
-      $("dl").textContent = "Download for Windows · " + mb(exe.size);
+      $("dl").textContent = "Download for Windows";
       $("shaCmd").textContent = "Get-FileHash .\\" + exe.name;
     }
 
@@ -240,7 +235,7 @@ function mb(bytes) {
       const a = (rel.assets || []).find(x => re.test(x.name));
       if (!a) return;
       $(id).href = a.browser_download_url;
-      $(id).textContent = label + " · " + mb(a.size);
+      $(id).textContent = label;
     };
     pick(/arm64/i, "dlMacArm",   "Download for Apple Silicon");
   } catch (e) { /* the buttons already point at the releases page */ }
