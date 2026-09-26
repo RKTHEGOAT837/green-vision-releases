@@ -1,0 +1,1 @@
+Media for the reviews page is committed here and served by GitHub Pages, which sends a real content-type and honours range requests - so a clip plays in the page instead of downloading. Uploaded from the admin portal; 40 MB a file.

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What people say about Green Vision</title>
+<meta name="description" content="Reviews of Green Vision from the people using it — planners, officers, students and volunteers.">
+<!--
+  Reviews, from the people using the app.
+
+  TWO SOURCES, AND THE SPLIT IS DELIBERATE, exactly as on the download
+  page. The REVIEWS themselves come from the admin API, because they are
+  edited from the admin portal and have to appear without a redeploy. The
+  MEDIA is committed into this repository and served by GitHub Pages,
+  because Pages sends a real content-type and honours range requests, so a
+  video plays inline in the page instead of arriving as a download. A
+  release asset would have been easier to upload and is served as an
+  attachment, which is the one thing this page must not do.
+
+  If the API is unreachable the page says so plainly rather than showing an
+  empty wall that reads as "nobody likes this".
+-->
+<style>
+:root{--bg:#f2f5f3;--card:#fff;--ink:#0f2a22;--soft:#5c7168;--line:#dfe6e1;
+      --brand:#0e9f6e;--bg2:#eef3f0;}
+@media(prefers-color-scheme:dark){:root{--bg:#0c1512;--card:#121c19;--ink:#e8f2ee;
+      --soft:#9fb3aa;--line:#22322c;--bg2:#16211d;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);padding:30px 16px 64px;
+  font:15px/1.65 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+.w{max-width:760px;margin:0 auto;}
+.h{display:flex;align-items:center;gap:12px;margin-bottom:26px;}
+.h img{width:46px;height:46px;border-radius:12px;display:block;}
+.n{font-size:19px;font-weight:800;letter-spacing:-.2px;}
+.t{font-size:10.5px;font-weight:700;color:var(--soft);letter-spacing:.13em;}
+h1{font-size:26px;margin:0 0 8px;letter-spacing:-.4px;}
+.lede{color:var(--soft);margin:0 0 26px;font-size:15px;}
+.r{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:20px 20px 16px;margin-bottom:16px;}
+.rh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px;}
+.who{font-weight:700;}
+.role{color:var(--soft);font-size:13px;}
+.stars{color:#f5a623;letter-spacing:2px;font-size:14px;margin-left:auto;}
+.body{margin:10px 0 0;white-space:pre-wrap;}
+.media{margin-top:14px;}
+.media video,.media img{width:100%;border-radius:12px;display:block;background:var(--bg2);}
+.media video{max-height:70vh;}
+.cap{color:var(--soft);font-size:12.5px;margin-top:6px;}
+.when{color:var(--soft);font-size:12px;margin-top:10px;}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:16px;
+  padding:34px 22px;text-align:center;color:var(--soft);}
+.back{display:inline-block;margin-bottom:20px;color:var(--brand);text-decoration:none;
+  font-weight:700;font-size:13.5px;}
+.back:hover{text-decoration:underline;}
+.f{text-align:center;font-size:11.5px;color:var(--soft);margin-top:26px;}
+.skel{height:120px;border-radius:16px;background:var(--bg2);margin-bottom:16px;
+  animation:p 1.2s ease-in-out infinite;}
+@keyframes p{0%,100%{opacity:.55}50%{opacity:.9}}
+</style></head><body><div class="w">
+
+<a class="back" href="./">&larr; Green Vision</a>
+
+<div class="h">
+  <img src="green-vision-mark-128.png" alt="">
+  <div><div class="n">Green Vision</div><div class="t">ENVIRONMENTAL INTELLIGENCE</div></div>
+</div>
+
+<h1>What people say</h1>
+<p class="lede">Reviews from the people actually using Green Vision &mdash; planners,
+horticulture officers, students and volunteers. Published as sent, in their words.</p>
+
+<div id="list">
+  <div class="skel"></div><div class="skel"></div>
+</div>
+
+<div class="f">Green Vision &mdash; tree-planting prioritisation for Indian cities.</div>
+</div>
+
+<script>
+const API = "https://green-vision-api.greenvision-rk.workers.dev";
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g,
+  c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function stars(n) {
+  n = Math.max(0, Math.min(5, parseInt(n, 10) || 0));
+  return n ? "★".repeat(n) + "☆".repeat(5 - n) : "";
+}
+
+function when(ms) {
+  if (!ms) return "";
+  try {
+    return new Date(ms).toLocaleDateString("en-IN",
+      { day: "numeric", month: "long", year: "numeric" });
+  } catch (e) { return ""; }
+}
+
+/* One review. `media` is a path inside this site, never a full URL from the
+   API: a reviews page that renders whatever URL an API hands it is a page
+   that can be made to embed anything. */
+function card(r) {
+  const safe = String(r.media || "").replace(/[^A-Za-z0-9._/-]/g, "");
+  const inSite = safe && /^reviews\/media\/[A-Za-z0-9._-]+$/.test(safe);
+  let media = "";
+  if (inSite) {
+    if (/\.(mp4|webm|mov)$/i.test(safe)) {
+      media = '<div class="media"><video controls preload="metadata" playsinline ' +
+              'src="' + esc(safe) + '"></video></div>';
+    } else if (/\.(png|jpe?g|gif|webp|avif)$/i.test(safe)) {
+      media = '<div class="media"><img loading="lazy" alt="" src="' + esc(safe) + '"></div>';
+    }
+  }
+  return '<div class="r">' +
+      '<div class="rh"><span class="who">' + esc(r.name || "Anonymous") + '</span>' +
+        (r.role ? '<span class="role">' + esc(r.role) + '</span>' : "") +
+        (r.stars ? '<span class="stars">' + stars(r.stars) + '</span>' : "") +
+      '</div>' +
+      (r.text ? '<div class="body">' + esc(r.text) + '</div>' : "") +
+      media +
+      (r.caption ? '<div class="cap">' + esc(r.caption) + '</div>' : "") +
+      (r.at ? '<div class="when">' + esc(when(r.at)) + '</div>' : "") +
+    '</div>';
+}
+
+(async () => {
+  const list = document.getElementById("list");
+  try {
+    const c = new AbortController();
+    const t = setTimeout(() => c.abort(), 9000);
+    const r = await fetch(API + "/app/reviews", { signal: c.signal });
+    clearTimeout(t);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const j = await r.json();
+    const rows = (j && j.reviews) || [];
+    if (!rows.length) {
+      list.innerHTML = '<div class="empty">No reviews yet. If you have used ' +
+        'Green Vision and want to say something about it, write to ' +
+        '<b>greenvision.support@gmail.com</b>.</div>';
+      return;
+    }
+    list.innerHTML = rows.map(card).join("");
+  } catch (e) {
+    /* Say what happened. An empty page here reads as "nobody has anything
+       good to say", which is a different and much worse message than "the
+       server did not answer". */
+    list.innerHTML = '<div class="empty">Could not load the reviews just now. ' +
+      'Please try again in a moment.</div>';
+  }
+})();
+</script>
+</body></html>
