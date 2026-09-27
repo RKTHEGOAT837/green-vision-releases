@@ -42,7 +42,16 @@ h1{font-size:26px;margin:0 0 8px;letter-spacing:-.4px;}
 .body{margin:10px 0 0;white-space:pre-wrap;}
 .media{margin-top:14px;}
 .media video,.media img{width:100%;border-radius:12px;display:block;background:var(--bg2);}
-.media video{max-height:70vh;}
+/* PORTRAIT MEDIA IS THE COMMON CASE, NOT THE EXCEPTION.
+   People record these on a phone, so the file is 1080x1920. Stretched to
+   the full 719 px column that produced a 719x504 letterbox: a thin strip
+   of person between two wide bars of black, which reads as a broken
+   player rather than a video. A phone-shaped video gets a phone-shaped
+   box, centred, and `aspect-ratio` keeps the space reserved before the
+   metadata arrives so the page does not jump when it does. */
+.media video{max-height:min(70vh,560px);width:auto;max-width:100%;margin:0 auto;}
+.media.is-portrait video{aspect-ratio:9/16;height:min(70vh,560px);}
+.media.is-landscape video{aspect-ratio:16/9;width:100%;height:auto;}
 .cap{color:var(--soft);font-size:12.5px;margin-top:6px;}
 .when{color:var(--soft);font-size:12px;margin-top:10px;}
 .empty{background:var(--card);border:1px dashed var(--line);border-radius:16px;
@@ -136,6 +145,17 @@ function card(r) {
       return;
     }
     list.innerHTML = rows.map(card).join("");
+    /* Orientation is only knowable once the file says so, so the class is
+       set on loadedmetadata rather than guessed from the extension. */
+    list.querySelectorAll(".media video").forEach(v => {
+      const tag = () => {
+        if (!v.videoWidth || !v.videoHeight) return;
+        v.parentElement.classList.add(
+          v.videoHeight > v.videoWidth ? "is-portrait" : "is-landscape");
+      };
+      v.addEventListener("loadedmetadata", tag);
+      tag();
+    });
   } catch (e) {
     /* Say what happened. An empty page here reads as "nobody has anything
        good to say", which is a different and much worse message than "the

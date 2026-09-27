@@ -154,6 +154,17 @@ ul{margin:8px 0 0;padding-left:20px;}
   newer version replaces this one; your projects and your sign-in are kept.</p>
 </div>
 
+<!-- The reviews page existed for a week with nothing linking to it: it was
+     reachable from inside the app and from nowhere on the web, which is the
+     one place somebody deciding whether to download 1.33 GB is standing. -->
+<div class="card">
+  <h1 style="font-size:17px">What people say</h1>
+  <p class="dim">Planners, horticulture officers, students and volunteers on
+  what the app is actually like to use — in their words, and several of
+  them on video.</p>
+  <p style="margin-top:12px"><a href="reviews.html" style="color:#0e9f6e;font-weight:700;text-decoration:none">Read the reviews &rarr;</a></p>
+</div>
+
 <div class="f">Green Vision — tree-planting prioritisation for Indian cities.</div>
 </div>
 
@@ -161,11 +172,6 @@ ul{margin:8px 0 0;padding-left:20px;}
 const REPO = "RKTHEGOAT837/green-vision-releases";
 const API  = "https://green-vision-api.greenvision-rk.workers.dev";
 const $ = id => document.getElementById(id);
-
-function mb(bytes) {
-  if (!bytes) return "";
-  return (bytes / 1048576).toFixed(0) + " MB";
-}
 
 /* 1. The file, from GitHub. This is the half that must never depend on
       anything we run ourselves. */
