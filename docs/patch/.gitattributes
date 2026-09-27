@@ -1,0 +1,2 @@
+# The app hashes these bytes. Git must not rewrite them.
+*.html -text -diff
