@@ -49,8 +49,12 @@ h1{font-size:26px;margin:0 0 8px;letter-spacing:-.4px;}
    player rather than a video. A phone-shaped video gets a phone-shaped
    box, centred, and `aspect-ratio` keeps the space reserved before the
    metadata arrives so the page does not jump when it does. */
-.media video{max-height:min(70vh,560px);width:auto;max-width:100%;margin:0 auto;}
-.media.is-portrait video{aspect-ratio:9/16;height:min(70vh,560px);}
+/* Sized by WIDTH, not by height. A viewport-relative height collapses to
+   nothing wherever 1vh resolves to 0 - a hidden tab, a thumbnail capture,
+   a print preview - and a video with height:0 is not a small video, it is
+   an invisible one. A width cap cannot do that. */
+.media video{max-width:100%;margin:0 auto;}
+.media.is-portrait video{aspect-ratio:9/16;width:min(100%,332px);height:auto;}
 .media.is-landscape video{aspect-ratio:16/9;width:100%;height:auto;}
 .cap{color:var(--soft);font-size:12.5px;margin-top:6px;}
 .when{color:var(--soft);font-size:12px;margin-top:10px;}
