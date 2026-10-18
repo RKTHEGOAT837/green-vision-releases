@@ -39,6 +39,8 @@ h1{font-size:26px;margin:0 0 8px;letter-spacing:-.4px;}
 .who{font-weight:700;}
 .role{color:var(--soft);font-size:13px;}
 .stars{color:#f5a623;letter-spacing:2px;font-size:14px;margin-left:auto;}
+.stars .half{background:linear-gradient(90deg,#f5a623 50%,rgba(245,166,35,.28) 50%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stars .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
 .body{margin:10px 0 0;white-space:pre-wrap;}
 .media{margin-top:14px;}
 .media video,.media img{width:100%;border-radius:12px;display:block;background:var(--bg2);}
@@ -93,8 +95,12 @@ const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g,
   c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 function stars(n) {
-  n = Math.max(0, Math.min(5, parseInt(n, 10) || 0));
-  return n ? "★".repeat(n) + "☆".repeat(5 - n) : "";
+  /* Whole and half stars: 4.5 draws four full, one half, none empty. */
+  n = Math.max(0, Math.min(5, Math.round((parseFloat(n) || 0) * 2) / 2));
+  if (!n) return "";
+  const full = Math.floor(n), half = n - full >= 0.5 ? 1 : 0;
+  return "★".repeat(full) + (half ? '<span class="half">★</span>' : "") + "☆".repeat(5 - full - half) +
+    '<span class="sr"> ' + n + ' out of 5</span>';
 }
 
 function when(ms) {
